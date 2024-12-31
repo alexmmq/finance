@@ -4,11 +4,11 @@ import lombok.Data;
 
 @Data
 public class Expense {
-    public Budget budget;
+    public String expenseName;
     private double expenseValue;
 
-    public Expense(Budget budget, double expenseValue) {
-        this.budget = budget;
+    public Expense(String expenseName, double expenseValue) {
+        this.expenseName = expenseName;
         this.expenseValue = expenseValue;
     }
 }

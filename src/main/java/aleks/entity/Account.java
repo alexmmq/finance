@@ -17,6 +17,8 @@ public class Account {
     public Account(int accountNumber) {
         this.accountNumber = accountNumber;
         this.balance = 0;
+        this.incomes = new ArrayList<>();
+        this.budgets = new ArrayList<>();
     }
 
     public void addIncome(Income income) {
@@ -64,5 +66,11 @@ public class Account {
                 budgetIterator.remove();
             }
         }
+    }
+
+    public void addExpenseInBudget(Expense expense, Budget budget) {
+        ArrayList<Expense> expenses = budget.getExpenses();
+        expenses.add(expense);
+        budget.setExpenses(expenses);
     }
 }

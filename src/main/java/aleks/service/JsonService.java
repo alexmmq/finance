@@ -1,6 +1,6 @@
 package aleks.service;
 
-public interface jsonService {
+public interface JsonService {
     void flush();
     void retrieve();
 }

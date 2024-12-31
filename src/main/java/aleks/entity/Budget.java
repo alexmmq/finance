@@ -12,6 +12,7 @@ public class Budget {
 
     public Budget(String budgetName) {
         this.budgetName = budgetName;
+        expenses = new ArrayList<>();
     }
 
     public Budget(ArrayList<Expense> expenses, String budgetName) {
