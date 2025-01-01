@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class User {
+    public User() {
+    }
 
     public User(String username, String password) {
         this.username = username;

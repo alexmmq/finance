@@ -14,6 +14,9 @@ public class Account {
     private ArrayList<Income> incomes;
     private ArrayList<Budget> budgets;
 
+    public Account() {
+    }
+
     public Account(int accountNumber) {
         this.accountNumber = accountNumber;
         this.balance = 0;

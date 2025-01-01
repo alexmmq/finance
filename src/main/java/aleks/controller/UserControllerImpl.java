@@ -1,11 +1,12 @@
 package aleks.controller;
 
 import aleks.entity.User;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
+@Data
 public class UserControllerImpl implements UserController {
     ArrayList<User> users;
 
@@ -38,10 +39,10 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(String username) {
         Iterator<User> iterator = users.iterator();
         while(iterator.hasNext()) {
-            if(iterator.next().getUsername().equals(user.getUsername())) {
+            if(iterator.next().getUsername().equals(username)) {
                 iterator.remove();
             }
         }
@@ -59,7 +60,7 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public List<User> findAllUsers() {
+    public ArrayList<User> findAllUsers() {
         return users;
     }
 }

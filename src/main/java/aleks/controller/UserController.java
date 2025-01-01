@@ -2,6 +2,7 @@ package aleks.controller;
 
 import aleks.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface UserController {
@@ -13,9 +14,9 @@ public interface UserController {
 
     void updateUser(User user);
 
-    void deleteUser(User user);
+    void deleteUser(String userName);
 
     User findUserByUsername(String username);
 
-    List<User> findAllUsers();
+    ArrayList<User> findAllUsers();
 }
