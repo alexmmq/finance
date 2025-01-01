@@ -76,4 +76,27 @@ public class Account {
         expenses.add(expense);
         budget.setExpenses(expenses);
     }
+
+    public void transfer(double amount, User sender, User beneficiary) {
+        double currentBalance = getBalance();
+        beneficiary.getAccount().receive(amount, sender, beneficiary);
+
+        //updating sender's balance
+        sender.getAccount().setBalance(currentBalance - amount);
+
+        //creating a budget and expense inside sender's entity
+        Budget budget = new Budget("Transfer to " + beneficiary.getUsername());
+        budget.setBudgetAmount(amount);
+        Expense expense = new Expense("Transfer", amount);
+        addExpenseInBudget(expense, budget);
+        sender.getAccount().addBudget(budget);
+    }
+
+    public void receive(double amount, User sender, User beneficiary) {
+        double currentBalance = beneficiary.getAccount().getBalance();
+
+        //creating a new income from the incoming stream of money
+        Income income = new Income("Transfer from " + sender.getUsername(), amount);
+        beneficiary.getAccount().addIncome(income);
+    }
 }

@@ -92,5 +92,10 @@ public class App
         printService.getOverallInformation(userController.findUserByUsername("admin"));
         printService.getOverallInformation(userController.findUserByUsername("admin2"));
 
+        userController.findUserByUsername("admin").getAccount().transfer(
+                1000, userController.findUserByUsername("admin"), userController.findUserByUsername("admin2"));
+
+        printService.getOverallInformation(userController.findUserByUsername("admin"));
+        printService.getOverallInformation(userController.findUserByUsername("admin2"));
     }
 }
