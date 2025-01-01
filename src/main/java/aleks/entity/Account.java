@@ -74,15 +74,13 @@ public class Account {
     public void addExpenseInBudget(Expense expense, Budget budget) {
         ArrayList<Expense> expenses = budget.getExpenses();
         expenses.add(expense);
+        this.balance = balance - expense.getExpenseValue();
         budget.setExpenses(expenses);
     }
 
     public void transfer(double amount, User sender, User beneficiary) {
         double currentBalance = getBalance();
         beneficiary.getAccount().receive(amount, sender, beneficiary);
-
-        //updating sender's balance
-        sender.getAccount().setBalance(currentBalance - amount);
 
         //creating a budget and expense inside sender's entity
         Budget budget = new Budget("Transfer to " + beneficiary.getUsername());
