@@ -59,17 +59,48 @@ public class App
                          case "expenses":
                              if(!userController.getActiveUser().getAccount().getBudgets().isEmpty()){
                                  printService.getPrettyBudgets(userController.getActiveUser());
+                                 //case the user has budgets added
+                                 System.out.println(userController.getActiveUser() + "> " +
+                                         "\n 'add' - to add a new budget to the account" +
+                                         "\n 'edit -b 'budgetName' - to edit budget" +
+                                         "\n 'remove -b 'budgetName' - to remove budget" +
+                                         "\n 'exit' - to exit the program");
+                                 input = reader.readLine();
+                                 switch(input){
+                                     case "add":
+                                         System.out.println("Please enter the budget name");
+                                         input = reader.readLine();
+                                         Budget budget = new Budget(input);
+                                         boolean correctDigit = false;
+                                         while(!correctDigit){
+                                             System.out.println("Please enter a size of budget");
+                                             input = reader.readLine();
+                                             if(Double.parseDouble(input)>0){
+                                                 budget.setBudgetAmount(Double.parseDouble(input));
+                                                 correctDigit = true;
+                                             } else{
+                                                 System.out.println("Invalid budget");
+                                             }
+                                         }
+                                         userController.getActiveUser().getAccount().addBudget(budget);
+                                         System.out.println("Added budget " + budget);
+                                     case "edit":
+                                 }
                              } else{
                               //case the user doesn't have any expenses/budgets added
-                                 System.out.println("No expenses and budgets added, please add a budget first");
+                                 System.out.println("No budgets added, please add a budget first");
                                  input = reader.readLine();
                                  Budget budget = new Budget(input);
-                                 System.out.println("Please enter a size of budget");
-                                 input = reader.readLine();
-                                 if(Double.parseDouble(input)>0){
-                                     budget.setBudgetAmount(Double.parseDouble(input));
-                                 } else{
-                                     System.out.println("Invalid budget");
+                                 boolean correctDigit = false;
+                                 while(!correctDigit){
+                                     System.out.println("Please enter a size of budget");
+                                     input = reader.readLine();
+                                     if(Double.parseDouble(input)>0){
+                                         budget.setBudgetAmount(Double.parseDouble(input));
+                                         correctDigit = true;
+                                     } else{
+                                         System.out.println("Invalid budget");
+                                     }
                                  }
                                  userController.getActiveUser().getAccount().addBudget(budget);
                                  System.out.println("Added budget " + budget);

@@ -78,6 +78,24 @@ public class Account {
         budget.setExpenses(expenses);
     }
 
+    public void removeExpenseInBudget(Expense expense, Budget budget) {
+        ArrayList<Expense> expenses = budget.getExpenses();
+        expenses.remove(expense);
+        this.balance = balance + expense.getExpenseValue();
+        budget.setExpenses(expenses);
+    }
+
+    public void editExpenseInBudget(Expense expense, Budget budget) {
+        ArrayList<Expense> expenses = budget.getExpenses();
+        for (int i = 0; i < expenses.size(); i++) {
+            if (expenses.get(i).equals(expense)) {
+                expenses.set(i, expense);
+                this.balance = balance - expense.getExpenseValue();
+            }
+        }
+        budget.setExpenses(expenses);
+    }
+
     public void transfer(double amount, User sender, User beneficiary) {
         double currentBalance = getBalance();
         beneficiary.getAccount().receive(amount, sender, beneficiary);

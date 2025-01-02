@@ -13,13 +13,23 @@ public interface AccountController {
 
     void updateAccount(Account account, User user);
 
-    ArrayList<Income> getIncomes(User user);
-
-    void setIncomes(ArrayList<Income> incomes, User user);
-
-    ArrayList<Budget> getBudgets(User user);
-
-    void setBudgets(ArrayList<Budget> budgets, User user);
-
     boolean checkIfExpensesExceedBudget(User user);
+
+    void addBudget(Budget budget, User user);
+
+    void deleteBudget(Budget budget, User user);
+
+    void editBudget(Budget budget, User user);
+
+    void addExpenseToBudget(Expense expense, Budget budget, User user);
+
+    void deleteExpenseFromBudget(Expense expense, Budget budget, User user);
+
+    void editExpenseInBudget(Expense expense, Budget budget, User user);
+
+    void addIncome(Income income, User user);
+
+    void deleteIncome(Income income, User user);
+
+    void editIncome(Income income, User user);
 }

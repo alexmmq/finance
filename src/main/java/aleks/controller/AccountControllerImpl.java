@@ -22,28 +22,53 @@ public class AccountControllerImpl implements AccountController{
 
 
     @Override
-    public ArrayList<Income> getIncomes(User user) {
-        return user.getAccount().getIncomes();
-    }
-
-    @Override
-    public void setIncomes(ArrayList<Income> incomes, User user) {
-        user.getAccount().setIncomes(incomes);
-    }
-
-    @Override
-    public ArrayList<Budget> getBudgets(User user) {
-        return user.getAccount().getBudgets();
-    }
-
-    @Override
-    public void setBudgets(ArrayList<Budget> budgets, User user) {
-        user.getAccount().setBudgets(budgets);
-    }
-
-    @Override
     public boolean checkIfExpensesExceedBudget(User user) {
 
         return false;
+    }
+
+    @Override
+    public void addBudget(Budget budget, User user) {
+        user.getAccount().addBudget(budget);
+    }
+
+    @Override
+    public void deleteBudget(Budget budget, User user) {
+        user.getAccount().removeBudget(budget);
+    }
+
+    @Override
+    public void editBudget(Budget budget, User user) {
+        user.getAccount().updateBudget(budget);
+    }
+
+    @Override
+    public void addExpenseToBudget(Expense expense, Budget budget, User user) {
+        user.getAccount().addExpenseInBudget(expense, budget);
+    }
+
+    @Override
+    public void deleteExpenseFromBudget(Expense expense, Budget budget, User user) {
+        user.getAccount().removeExpenseInBudget(expense, budget);
+    }
+
+    @Override
+    public void editExpenseInBudget(Expense expense, Budget budget, User user) {
+        user.getAccount().editExpenseInBudget(expense, budget);
+    }
+
+    @Override
+    public void addIncome(Income income, User user) {
+        user.getAccount().addIncome(income);
+    }
+
+    @Override
+    public void deleteIncome(Income income, User user) {
+        user.getAccount().removeIncome(income);
+    }
+
+    @Override
+    public void editIncome(Income income, User user) {
+        user.getAccount().updateIncome(income);
     }
 }
