@@ -3,10 +3,14 @@ package aleks.controller;
 import aleks.entity.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface UserController {
-    //case of creation without records
+    void setActiveUser(User user);
+
+    void resetActiveUser();
+
+    User getActiveUser();
+
     void createUser(String username, String password);
 
     //case of creation out of records

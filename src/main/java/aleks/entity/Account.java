@@ -91,7 +91,6 @@ public class Account {
     }
 
     public void receive(double amount, User sender, User beneficiary) {
-        double currentBalance = beneficiary.getAccount().getBalance();
 
         //creating a new income from the incoming stream of money
         Income income = new Income("Transfer from " + sender.getUsername(), amount);

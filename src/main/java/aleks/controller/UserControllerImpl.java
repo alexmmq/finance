@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 @Data
 public class UserControllerImpl implements UserController {
+    User currentActiveUser;
     ArrayList<User> users;
 
     public UserControllerImpl() {
@@ -16,6 +17,21 @@ public class UserControllerImpl implements UserController {
 
     public UserControllerImpl(ArrayList<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public void setActiveUser(User user) {
+        currentActiveUser = user;
+    }
+
+    @Override
+    public void resetActiveUser() {
+        currentActiveUser = null;
+    }
+
+    @Override
+    public User getActiveUser() {
+        return currentActiveUser;
     }
 
     @Override

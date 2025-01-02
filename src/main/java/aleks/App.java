@@ -7,6 +7,9 @@ import aleks.entity.*;
 import aleks.service.JsonServiceImpl;
 import aleks.service.PrintServiceImpl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 /**
@@ -15,87 +18,164 @@ import java.util.ArrayList;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
-        AccountControllerImpl accountController = new AccountControllerImpl();
-        UserController userController = new UserControllerImpl();
-        PrintServiceImpl printService = new PrintServiceImpl();
-        JsonServiceImpl jsonService = new JsonServiceImpl();
+    static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    static AccountControllerImpl accountController = new AccountControllerImpl();
+    static UserController userController = new UserControllerImpl();
+    static PrintServiceImpl printService = new PrintServiceImpl();
+    static JsonServiceImpl jsonService = new JsonServiceImpl();
+    static boolean isLoggedIn = false;
+    public static void main( String[] args ) {
+        while(true){
+         try{
+             if(!isLoggedIn){
+                 System.out.println("Please enter following commands to proceed: "
+                         + "\n'init' - to create a profile"
+                         + "\n'login' - to log in using existing profile"
+                         + "\n'exit' - to exit the program");
+                 String input = reader.readLine();
+                 switch(input){
+                     case "init":
+                         signUp();
+                         break;
+                     case "login":
+                         login();
+                             break;
+                     case "exit":
+                         System.exit(0);
+                     default:
+                         System.out.println("Invalid command");
+                 }
+             } else{
+                 System.out.println("Welcome, " + userController.getActiveUser());
 
-        userController.createUser("admin", "admin1234");
-        accountController.addAccount(1234, userController.findUserByUsername("admin"));
-        Account account = userController.findUserByUsername("admin").getAccount();
+                     System.out.println(userController.getActiveUser() + "> " +
+                             "\n 'overall' - to get overall data on account" +
+                             "\n 'incomes' - to get incomes data on account" +
+                             "\n 'expenses' - to get current data and expenses" +
+                             "\n 'logout' - to log out" +
+                             "\n 'exit' - to exit the program");
+                     String input = reader.readLine();
+                     switch(input){
+                         case "expenses":
+                             if(!userController.getActiveUser().getAccount().getBudgets().isEmpty()){
+                                 printService.getPrettyBudgets(userController.getActiveUser());
+                             } else{
+                              //case the user doesn't have any expenses/budgets added
+                                 System.out.println("No expenses and budgets added, please add a budget first");
+                                 input = reader.readLine();
+                                 Budget budget = new Budget(input);
+                                 System.out.println("Please enter a size of budget");
+                                 input = reader.readLine();
+                                 if(Double.parseDouble(input)>0){
+                                     budget.setBudgetAmount(Double.parseDouble(input));
+                                 } else{
+                                     System.out.println("Invalid budget");
+                                 }
+                                 userController.getActiveUser().getAccount().addBudget(budget);
+                                 System.out.println("Added budget " + budget);
+                             }
+                             break;
+                         case "incomes":
+                             printService.getPrettyIncomes(userController.getActiveUser());
+                             break;
+                         case "overall":
+                             printService.getOverallInformation(userController.getActiveUser());
+                             break;
+                     }
 
-        //creating a list of incomes
-        Income income = new Income("salary", 25000);
-        Income income2 = new Income("dividend", 20000);
-        Income income3 = new Income("side gig", 2000);
-        account.addIncome(income);
-        account.addIncome(income2);
-        account.addIncome(income3);
-
-        //creating a list of budgets and expenses
-        Budget budget = new Budget("Transport");
-        budget.setBudgetAmount(2000);
-        account.addBudget(budget);
-        Budget budget2 = new Budget("Everyday Needs");
-        budget2.setBudgetAmount(20000);
-        account.addBudget(budget2);
-
-        Expense expenseTripToHome = new Expense("Trip to home", 500);
-        account.addExpenseInBudget(expenseTripToHome, budget);
-        Expense expenseFood = new Expense("Food", 10000);
-        account.addExpenseInBudget(expenseFood, budget2);
-
-        //printService.getOverallInformation(userController.findUserByUsername("admin"));
-
-        userController.createUser("admin2", "admin1234");
-        accountController.addAccount(2345, userController.findUserByUsername("admin2"));
-        Account account2 = userController.findUserByUsername("admin2").getAccount();
-
-        //creating a list of incomes
-        Income income4 = new Income("salary", 100000);
-        Income income5 = new Income("dividend", 30000);
-        Income income6 = new Income("side gig", 3000);
-        account2.addIncome(income4);
-        account2.addIncome(income5);
-        account2.addIncome(income6);
-
-        //creating a list of budgets and expenses
-        Budget budget3 = new Budget("Transport");
-        budget3.setBudgetAmount(2000);
-        account2.addBudget(budget3);
-        Budget budget4 = new Budget("Everyday Needs");
-        budget4.setBudgetAmount(20000);
-        account2.addBudget(budget4);
-
-        Expense expenseTripToHome2 = new Expense("Trip to home", 500);
-        account2.addExpenseInBudget(expenseTripToHome2, budget3);
-        Expense expenseFood2 = new Expense("Food", 10000);
-        account2.addExpenseInBudget(expenseFood2, budget4);
-
-        //printService.getOverallInformation(userController.findUserByUsername("admin"));
-
-        jsonService.flush(userController.findAllUsers());
-
-        userController.deleteUser("admin");
-        userController.deleteUser("admin2");
-        boolean areUsersDeleted = userController.findAllUsers().isEmpty();
-        if (areUsersDeleted) {
-            System.out.println("Users were deleted!");
-        } else {
-            System.out.println("Users were not deleted!");
+             }
+         } catch (Exception E){
+             System.out.println(E.getMessage());
+         }
         }
+    }
 
-        //retrieveing data
-        userController = jsonService.retrieve();
-        printService.getOverallInformation(userController.findUserByUsername("admin"));
-        printService.getOverallInformation(userController.findUserByUsername("admin2"));
+    public static void signUp(){
+        String input = "";
+        String name = "";
+        String password = "";
+        ArrayList<User> users = userController.findAllUsers();
+        System.out.println("Please enter a username to be used in system:");
 
-        userController.findUserByUsername("admin").getAccount().transfer(
-                1000, userController.findUserByUsername("admin"), userController.findUserByUsername("admin2"));
 
-        printService.getOverallInformation(userController.findUserByUsername("admin"));
-        printService.getOverallInformation(userController.findUserByUsername("admin2"));
+            try {
+                input = reader.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            boolean nameInUse = false;
+        if(!users.isEmpty()) {
+            for (User user : users) {
+                //case if we have the same username already, recursive call to the function
+                if (user.getUsername().equals(input)) {
+                    nameInUse = true;
+                    break;
+                }
+            }
+        }
+            if(nameInUse){
+                System.out.println("Username is already in use!");
+                signUp();
+            } else{
+                //positive case, proceeding with password
+                name = input.trim();
+
+                System.out.println("Please enter a password to be used in system:");
+                //#TODO check of the password (Special sign, Alphanumeric Chars)
+                try {
+                    input = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                password = input.trim();
+                userController.createUser(name, password);
+                //assigning account to the user
+                int accountNumber = (int)(Math.random()*1000);
+                accountController.addAccount(accountNumber, userController.findUserByUsername(name));
+            }
+    }
+
+    public static void login(){
+        String input = "";
+        ArrayList<User> users = userController.findAllUsers();
+        System.out.println("Please enter your username:");
+        if(!users.isEmpty()){
+            try {
+                input = reader.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            //parsing through existing users to find a match
+            boolean nameFound = false;
+            for(User user : users){
+                if(user.getUsername().equals(input)){
+                    nameFound = true;
+                    break;
+                }
+            }
+            if(nameFound){
+                System.out.println("Please enter your password:");
+                try {
+                    input = reader.readLine();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                for(User user : users){
+                    if(user.getPassword().equals(input)){
+                        userController.setActiveUser(user);
+                        isLoggedIn = true;
+                        break;
+                    }
+                }
+            } else{
+                System.out.println("Username is incorrect!");
+                login();
+            }
+        }
+    }
+
+    public static void logout(){
+        isLoggedIn = false;
+        userController.resetActiveUser();
     }
 }
