@@ -1,5 +1,7 @@
 package aleks.service;
 
+import aleks.controller.AccountController;
+import aleks.controller.AccountControllerImpl;
 import aleks.entity.Budget;
 import aleks.entity.Expense;
 import aleks.entity.Income;
@@ -8,6 +10,8 @@ import aleks.entity.User;
 import java.util.ArrayList;
 
 public class PrintServiceImpl implements PrintService {
+
+    AccountController accountController = new AccountControllerImpl();
 
     @Override
     public void getPrettyBudgets(User user) {
@@ -21,6 +25,11 @@ public class PrintServiceImpl implements PrintService {
             for (Expense expense : expenses) {
                 System.out.print("              ");
                 System.out.printf("%-20s%20s%n", expense.getExpenseName(), expense.getExpenseValue());
+            }
+            if(!budget.getExpenses().isEmpty()){
+                if(accountController.checkIfExpensesExceedBudget(budget, user)){
+                    System.out.println("Expenses exceeds budget " + budget.getBudgetName());
+                }
             }
         }
     }

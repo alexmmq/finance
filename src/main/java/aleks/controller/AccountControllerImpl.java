@@ -22,10 +22,16 @@ public class AccountControllerImpl implements AccountController{
     }
 
 
-    //TODO
     @Override
-    public boolean checkIfExpensesExceedBudget(User user) {
-        return false;
+    public boolean checkIfExpensesExceedBudget(Budget budget, User user) {
+        ArrayList<Expense> expenses = budget.getExpenses();
+        double sum = 0;
+        if(!expenses.isEmpty()) {
+            for(Expense expense : expenses) {
+                sum = sum + expense.getExpenseValue();
+            }
+        }
+        return budget.getBudgetAmount() < sum;
     }
 
     @Override
