@@ -5,7 +5,7 @@ import aleks.entity.User;
 import java.util.ArrayList;
 
 public interface UserController {
-    void setActiveUser(User user);
+    void setActiveUser(String userName);
 
     void resetActiveUser();
 

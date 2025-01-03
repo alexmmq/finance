@@ -29,6 +29,21 @@ public class AccountControllerImpl implements AccountController{
     }
 
     @Override
+    public boolean checkIfBudgetExists(String budgetName, User user) {
+        boolean result = false;
+        //parsing through the list of existing budgets
+        ArrayList<Budget> budgets =  user.getAccount().getBudgets();
+        if(!budgets.isEmpty()){
+            for(Budget budget : budgets){
+                if(budget.getBudgetName().equals(budgetName)){
+                    result = true;
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
     public boolean addBudget(String budgetName, String budgetAmount, User user) {
         //check for number validity
         boolean result = false;
@@ -72,6 +87,7 @@ public class AccountControllerImpl implements AccountController{
             }
             Budget budget = new Budget(budgetName);
             budget.setBudgetAmount(Double.parseDouble(budgetAmount));
+            deleteBudget(budgetName, user);
             user.getAccount().addBudget(budget);
             result = true;
         }
@@ -137,6 +153,7 @@ public class AccountControllerImpl implements AccountController{
                             result = true;
                         }
                     }
+                    budget.setExpenses(expenses);
                 }
             }
         }

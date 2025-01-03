@@ -15,6 +15,8 @@ public interface AccountController {
 
     boolean checkIfExpensesExceedBudget(User user);
 
+    boolean checkIfBudgetExists(String budgetName, User user);
+
     boolean addBudget(String budgetName, String budgetAmount, User user);
 
     boolean deleteBudget(String budgetName, User user);

@@ -20,8 +20,9 @@ public class UserControllerImpl implements UserController {
     }
 
     @Override
-    public void setActiveUser(User user) {
-        currentActiveUser = user;
+    public void setActiveUser(String userName) {
+        //parsing through existing users
+        this.currentActiveUser = findUserByUsername(userName);
     }
 
     @Override
