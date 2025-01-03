@@ -53,6 +53,7 @@ public class Account {
 
 
     public void removeIncome(Income income) {
+
         Iterator<Income> incomeIterator = incomes.iterator();
         while (incomeIterator.hasNext()) {
             if (incomeIterator.next().equals(income)) {
@@ -80,9 +81,14 @@ public class Account {
 
     public void removeExpenseInBudget(Expense expense, Budget budget) {
         ArrayList<Expense> expenses = budget.getExpenses();
-        expenses.remove(expense);
-        this.balance = balance + expense.getExpenseValue();
-        budget.setExpenses(expenses);
+        Iterator<Expense> expenseIterator = expenses.iterator();
+        while (expenseIterator.hasNext()) {
+            if (expenseIterator.next().equals(expense)) {
+                expenseIterator.remove();
+                this.balance = balance + expense.getExpenseValue();
+                budget.setExpenses(expenses);
+            }
+        }
     }
 
     public void editExpenseInBudget(Expense expense, Budget budget) {

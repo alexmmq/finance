@@ -15,21 +15,23 @@ public interface AccountController {
 
     boolean checkIfExpensesExceedBudget(User user);
 
-    void addBudget(Budget budget, User user);
+    boolean addBudget(String budgetName, String budgetAmount, User user);
 
-    void deleteBudget(Budget budget, User user);
+    boolean deleteBudget(String budgetName, User user);
 
-    void editBudget(Budget budget, User user);
+    boolean editBudget(String budgetName, String budgetAmount, User user);
 
-    void addExpenseToBudget(Expense expense, Budget budget, User user);
+    boolean addExpenseToBudget(String expenseName, String expenseValue, String budgetName, User user);
 
-    void deleteExpenseFromBudget(Expense expense, Budget budget, User user);
+    boolean deleteExpenseFromBudget(String expenseName, String budgetName, User user);
 
-    void editExpenseInBudget(Expense expense, Budget budget, User user);
+    boolean editExpenseInBudget(String expenseName, String expenseValue, String budgetName, User user);
 
-    void addIncome(Income income, User user);
+    boolean addIncome(String incomeName, String incomeValue, User user);
 
-    void deleteIncome(Income income, User user);
+    boolean deleteIncome(String incomeName, User user);
 
-    void editIncome(Income income, User user);
+    boolean editIncome(String incomeName, String incomeValue, User user);
+
+    boolean isValidNumber(String inputNumber);
 }
