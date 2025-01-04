@@ -27,11 +27,13 @@ public class PrintServiceImpl implements PrintService {
                 System.out.printf("%-20s%20s%n", expense.getExpenseName(), expense.getExpenseValue());
             }
             if(!budget.getExpenses().isEmpty()){
-                if(accountController.checkIfExpensesExceedBudget(budget, user)){
+                if(accountController.IfExpensesExceedBudget(budget, user) < 0){
                     System.out.println("Expenses exceeds budget " + budget.getBudgetName());
                 }
             }
         }
+        //printing out budget expenses sum
+        System.out.println("Total sum of expenses: " + accountController.getSumOfExpenses(user));
     }
 
     @Override
@@ -41,6 +43,7 @@ public class PrintServiceImpl implements PrintService {
         for (Income income : incomes) {
             System.out.printf("%-20s%20s%n", income.getIncomeName(), income.getIncomeValue());
         }
+        System.out.println("Total sum of incomes: " + accountController.getSumOfIncomes(user));
     }
 
     @Override

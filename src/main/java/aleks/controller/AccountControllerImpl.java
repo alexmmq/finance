@@ -23,7 +23,7 @@ public class AccountControllerImpl implements AccountController{
 
 
     @Override
-    public boolean checkIfExpensesExceedBudget(Budget budget, User user) {
+    public double IfExpensesExceedBudget(Budget budget, User user) {
         ArrayList<Expense> expenses = budget.getExpenses();
         double sum = 0;
         if(!expenses.isEmpty()) {
@@ -31,7 +31,36 @@ public class AccountControllerImpl implements AccountController{
                 sum = sum + expense.getExpenseValue();
             }
         }
-        return budget.getBudgetAmount() < sum;
+        return budget.getBudgetAmount() - sum;
+    }
+
+    @Override
+    public double getSumOfExpenses(User user) {
+        ArrayList<Budget> budgets = user.getAccount().getBudgets();
+        double sum = 0;
+        if(!budgets.isEmpty()) {
+            for(Budget budget: budgets){
+                if(!budget.getExpenses().isEmpty()) {
+                    ArrayList<Expense> expenses = budget.getExpenses();
+                    for(Expense expense : expenses) {
+                        sum = sum + expense.getExpenseValue();
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+
+    @Override
+    public double getSumOfIncomes(User user) {
+        ArrayList<Income> incomes = user.getAccount().getIncomes();
+        double sum = 0;
+        if(!incomes.isEmpty()) {
+            for(Income income: incomes) {
+                sum = sum + income.getIncomeValue();
+            }
+        }
+        return sum;
     }
 
     @Override
@@ -216,5 +245,22 @@ public class AccountControllerImpl implements AccountController{
     @Override
     public boolean isValidNumber(String inputNumber) {
         return Integer.parseInt(inputNumber) > 0;
+    }
+
+    @Override
+    public boolean makeTransfer(String toUser, String amount, UserController userController) {
+        User currentUser = userController.getActiveUser();
+        ArrayList<User> users = userController.findAllUsers();
+        boolean result = false;
+        if(isValidNumber(amount)){
+            //parsing for receiver
+            for(User user: users){
+                if(user.getUsername().equals(toUser)){
+                    currentUser.getAccount().transfer(Double.parseDouble(amount), currentUser, user);
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 }

@@ -104,14 +104,20 @@ public class Account {
 
     public void transfer(double amount, User sender, User beneficiary) {
         double currentBalance = getBalance();
-        beneficiary.getAccount().receive(amount, sender, beneficiary);
+        //checking if amount is not exceeding available balance
+        if(currentBalance >= amount) {
+            beneficiary.getAccount().receive(amount, sender, beneficiary);
+            //creating a budget and expense inside sender's entity
+            Budget budget = new Budget("Transfer to " + beneficiary.getUsername());
+            budget.setBudgetAmount(amount);
+            Expense expense = new Expense("Transfer", amount);
+            addExpenseInBudget(expense, budget);
+            sender.getAccount().addBudget(budget);
+            System.out.println("Transfer to " + beneficiary.getUsername() + " is done successfully");
+        } else{
+            System.out.println("Not enough money on balance");
+        }
 
-        //creating a budget and expense inside sender's entity
-        Budget budget = new Budget("Transfer to " + beneficiary.getUsername());
-        budget.setBudgetAmount(amount);
-        Expense expense = new Expense("Transfer", amount);
-        addExpenseInBudget(expense, budget);
-        sender.getAccount().addBudget(budget);
     }
 
     public void receive(double amount, User sender, User beneficiary) {

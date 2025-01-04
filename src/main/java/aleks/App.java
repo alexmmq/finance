@@ -57,6 +57,7 @@ public class App
                              "\n 'overall' - to get overall data on account" +
                              "\n 'incomes' - to get incomes data on account" +
                              "\n 'budgets' - to get current budgets and expenses" +
+                             "\n 'transfer' - to transfer to a different account" +
                              "\n 'logout' - to log out" +
                              "\n 'exit' - to exit the program");
                      String input = reader.readLine();
@@ -250,6 +251,35 @@ public class App
                              break;
                          case "overall":
                              printService.getOverallInformation(userController.getActiveUser());
+                             break;
+                         case "transfer":
+                             //getting list of available users for transfer
+                             ArrayList<User> usersArray = new ArrayList<>();
+                             for(User user:userController.findAllUsers()){
+                                 if(!user.equals(userController.getActiveUser())){
+                                     usersArray.add(user);
+                                 }
+                             }
+                             System.out.println("Please enter a name of user you want to transfer money: ");
+                             for(User user:usersArray){
+                                 System.out.println(user.getUsername());
+                             }
+                             input = reader.readLine();
+                             String recipient = input;
+                             boolean correctInputUser = false;
+                             for(User user:usersArray){
+                                 if(user.getUsername().equals(input)){
+                                     correctInputUser = true;
+                                     break;
+                                 }
+                             }
+                             if(correctInputUser){
+                                 System.out.println("Please enter amount of money you want to transfer: ");
+                                 input = reader.readLine();
+                                 accountController.makeTransfer(recipient, input, userController);
+                             } else {
+                                 System.out.println("Something went wrong8");
+                             }
                              break;
                          case "logout":
                              jsonService.flush(userController.findAllUsers());

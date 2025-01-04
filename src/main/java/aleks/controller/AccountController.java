@@ -13,8 +13,11 @@ public interface AccountController {
 
     void updateAccount(Account account, User user);
 
-    //TODO change return type to double to calculate amount of remaining budget
-    boolean checkIfExpensesExceedBudget(Budget budget, User user);
+    double IfExpensesExceedBudget(Budget budget, User user);
+
+    double getSumOfExpenses(User user);
+
+    double getSumOfIncomes(User user);
 
     boolean checkIfBudgetExists(String budgetName, User user);
 
@@ -38,7 +41,7 @@ public interface AccountController {
 
     boolean isValidNumber(String inputNumber);
 
-    //TODO add a method to make a transaction
+    boolean makeTransfer(String toUser, String amount, UserController userController);
 
-    //TODO add a methods to get total expenses sum and sum of all incomes, available balance
+
 }
