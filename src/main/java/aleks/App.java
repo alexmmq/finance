@@ -178,6 +178,7 @@ public class App
                                          }
                                          break;
                                      case "exit":
+                                         jsonService.flush(userController.findAllUsers());
                                          System.exit(0);
                                      default:
                                          System.out.println("Incorrect input");
@@ -278,7 +279,7 @@ public class App
                                  input = reader.readLine();
                                  accountController.makeTransfer(recipient, input, userController);
                              } else {
-                                 System.out.println("Something went wrong8");
+                                 System.out.println("Something went wrong");
                              }
                              break;
                          case "logout":
